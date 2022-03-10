@@ -1,17 +1,13 @@
 import { REQUEST_TOKEN,
   GET_TOKEN_SUCESS,
   GET_TOKEN_FAIL,
-  VALID_LOGIN,
-  SET_PLAYERS } from '../actions';
+  SET_PLAYERS, 
+  RESET_ERROR} from '../actions';
 
 const initialState = {
   token: '',
   error: '',
   isLoading: false,
-  user: {
-    name: '',
-    password: '',
-  },
   players: [],
 };
 
@@ -34,11 +30,12 @@ function user(state = initialState, action) {
       error: action.error,
       isLoading: false,
     };
-  case VALID_LOGIN:
+  case RESET_ERROR:
     return {
       ...state,
-      user: { ...state.player, name: action.name, password: action.password },
-    };
+      error: '',
+      isLoading: false,
+    }
   case SET_PLAYERS:
     return {
       ...state,
