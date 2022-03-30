@@ -1,8 +1,9 @@
+export const SET_NAME = 'SET_NAME';
 export const REQUEST_TOKEN = 'REQUEST_TOKEN';
+export const GET_PLAYERS_FAIL = 'GET_PLAYERS_FAIL';
 export const GET_TOKEN_SUCESS = 'GET_TOKEN_SUCESS';
 export const GET_TOKEN_FAIL = 'GET_TOKEN_FAIL';
 export const RESET_ERROR = 'RESET_ERROR';
-export const VALID_LOGIN = 'VALID_LOGIN';
 export const SET_PLAYERS = 'SET_PLAYERS';
 
 export const requestToken = () => ({
@@ -19,15 +20,44 @@ export const getTokenFail = (error) => ({
   error,
 });
 
+export const getPlayersFail = (error) => ({
+  type: GET_PLAYERS_FAIL,
+  error,
+})
+
 export const resetError = (error) => ({
   type: RESET_ERROR,
   error,
+})
+
+export const setName = (name) => ({
+  type: SET_NAME,
+  name,
 })
 
 export const setPlayers = (players) => ({
   type: SET_PLAYERS,
   players,
 });
+
+export function fetchPlayers(token) {
+  return async (dispatch) => {
+    try {
+      const requestOptions = {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+      }
+      const response = await fetch('https://nbarecords-back-end.herokuapp.com/user/players', requestOptions);
+      const data = await response.json();
+      dispatch(setPlayers(data));
+    } catch (error) {
+      dispatch(getPlayersFail(error.message));
+    }
+  }
+}
 
 export function fetchToken(name, password, path) {
   return async (dispatch) => {
@@ -41,11 +71,11 @@ export function fetchToken(name, password, path) {
       const response = await fetch(`https://nbarecords-back-end.herokuapp.com/${path}`, requestOptions);
       const data = await response.json();
       const { token, message } = data;
-      console.log(message);
       if (message) {
         throw new Error(message);
       }
       dispatch(getTokenSucess(token));
+      dispatch(setName(name));
     } catch (error) {
       dispatch(getTokenFail(error.message));
     }

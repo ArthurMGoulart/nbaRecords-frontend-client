@@ -2,9 +2,11 @@ import { REQUEST_TOKEN,
   GET_TOKEN_SUCESS,
   GET_TOKEN_FAIL,
   SET_PLAYERS, 
-  RESET_ERROR} from '../actions';
+  RESET_ERROR,
+  SET_NAME} from '../actions';
 
 const initialState = {
+  name: '',
   token: '',
   error: '',
   isLoading: false,
@@ -13,6 +15,11 @@ const initialState = {
 
 function user(state = initialState, action) {
   switch (action.type) {
+  case SET_NAME:
+    return {
+      ...state,
+      name: action.name
+    }
   case REQUEST_TOKEN:
     return {
       ...state,
