@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchToken, getTokenFail, resetError } from '../redux/actions';
+import { fetchToken, resetError } from '../redux/actions';
 import './login.css';
 
 class Home extends React.Component {
@@ -51,7 +51,7 @@ class Home extends React.Component {
     event.preventDefault();
     const { history, dispatchfetchToken, dispatchResetError } = this.props;
     const { name, password } = this.state;
-    await dispatchfetchToken(name, password, 'user');
+    await dispatchfetchToken(name, password, 'signup');
     const { token, error } = this.props;
     if (error) {
       alert(error);
