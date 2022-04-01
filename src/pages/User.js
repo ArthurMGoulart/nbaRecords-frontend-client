@@ -40,7 +40,21 @@ class User extends React.Component {
   renderUserPlayers() {
     return (
       <div>
-        { this.state.players.length !== 0 ? this.state.players[0].first_name : false }
+        <table>
+          <th>Name</th>
+          <th>Team</th>
+          <th>Position</th>
+          { this.state.players.map((player) => {
+            const { first_name, position, team: { full_name } } = player;
+            return (
+              <td>
+                <tr>{ first_name }</tr>
+                <tr>{ full_name }</tr>
+                <tr>{ position }</tr>
+              </td>
+            )
+          })}
+        </table>
       </div>
     )
   }
@@ -49,7 +63,7 @@ class User extends React.Component {
     return (
       <div className="text-center">
         { this.renderUserInfo() }
-        { this.renderUserPlayers() }
+        { (this.state.players.length !== 0 ? this.renderUserPlayers() : false) }
       </div>
     );
   }
